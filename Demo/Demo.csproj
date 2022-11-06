@@ -2,14 +2,33 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="Assembly-CSharp" />
-  </ItemGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <CustomCommands>
+      <CustomCommands>
+        <Command>
+          <type>AfterBuild</type>
+          <command>cp /Users/huyongsheng/Desktop/ML/Mod_HollowKnight/Demo/bin/Debug/netstandard2.1/Demo.dll /Users/huyongsheng/Library/"Application Support"/Steam/steamapps/common/"Hollow Knight"/hollow_knight.app/Contents/Resources/Data/Managed/Mods/Demo-v1.0.0.0/Demo.dll</command>
+        </Command>
+      </CustomCommands>
+    </CustomCommands>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\..\Library\Application Support\Steam\steamapps\common\Hollow Knight\hollow_knight.app\Contents\Resources\Data\Managed\Assembly-CSharp.dll</HintPath>
+      <HintPath>bin\Debug\netstandard2.1\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>bin\Debug\netstandard2.1\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>bin\Debug\netstandard2.1\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Physics2DModule">
+      <HintPath>bin\Debug\netstandard2.1\UnityEngine.Physics2DModule.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayMaker">
+      <HintPath>bin\Debug\netstandard2.1\PlayMaker.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>
