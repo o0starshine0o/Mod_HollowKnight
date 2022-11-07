@@ -26,7 +26,10 @@ namespace Demo {
         // 这个方法每帧都要调用,成本很高
         public void Update ()
         {
-            HitBox.Instance.outputKnight ();
+            string knight = HitBox.Instance.GetKnightDesc ();
+            string enemy = HitBox.Instance.GetEnemyDesc ();
+            DqnMod.instance.Log ($"{knight}|||||{enemy}");
+            //DqnMod.instance.Log ($"{enemy}");
         }
     }
 }

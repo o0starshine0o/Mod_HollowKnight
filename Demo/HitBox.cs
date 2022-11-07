@@ -123,29 +123,77 @@ namespace Demo {
             DqnMod.instance.Log ($"TryAddHitboxes[{hitboxType}]: {collider2D}");
         }
 
-        public void outputKnight ()
+        // 获取knight的坐标信息
+        public string GetKnightDesc ()
         {
-            foreach(Collider2D collider2D in colliders [HitboxType.Knight]) {
+            foreach (Collider2D collider2D in colliders [HitboxType.Knight]) {
                 switch (collider2D) {
                 case BoxCollider2D boxCollider2D:
-                    Vector2 halfSize = boxCollider2D.size / 2f;
-                    Vector2 topLeft = LocalToScreenPoint(collider2D, new (-halfSize.x, halfSize.y));
-                    Vector2 bottomRight = LocalToScreenPoint (collider2D, new (halfSize.x, -halfSize.y));
-                    outputLog (boxCollider2D.name, topLeft.x, topLeft.y, bottomRight.x, bottomRight.y);
+                    return GetPointDesc(boxCollider2D);
+                }
+            }
+            return "";
+        }
+
+        // 获取敌人的坐标信息
+        public string GetEnemyDesc ()
+        {
+            string desc = "";
+            foreach (Collider2D collider2D in colliders [HitboxType.Enemy]) {
+                switch (collider2D) {
+                case BoxCollider2D boxCollider2D:
+                    desc += GetPointDesc (boxCollider2D);
+                    break;
+                case PolygonCollider2D polygonCollider2D:
+                    desc += GetPointDesc (polygonCollider2D);
                     break;
                 }
             }
+
+            return desc;
         }
 
-        private void outputLog (String name, float left, float top, float right, float bottom)
+        private string GetPointDesc (BoxCollider2D boxCollider2D)
         {
-            DqnMod.instance.Log ($"{name} in ([{left}, {top}], [{right}, {bottom}])");
+            Vector2 halfSize = boxCollider2D.size / 2f;
+            Vector2 topLeftPoint = new (-halfSize.x, halfSize.y);
+            Vector2 bottomRightPoint = new (halfSize.x, -halfSize.y);
+            Vector2 topLeft = ToWorldPoint (boxCollider2D, topLeftPoint);
+            Vector2 bottomRight = ToWorldPoint (boxCollider2D, bottomRightPoint);
+            return $"{topLeft.x},{topLeft.y},{bottomRight.x},{bottomRight.y},";
+
         }
 
-        private Vector2 LocalToScreenPoint (Collider2D collider2D, Vector2 point)
+        private string GetPointDesc (PolygonCollider2D polygonCollider2D)
         {
-            Vector2 result = Camera.main.WorldToScreenPoint ((Vector2)collider2D.transform.TransformPoint (point + collider2D.offset));
-            return new Vector2 ((int)Math.Round (result.x), (int)Math.Round (Screen.height - result.y));
+            string desc = "";
+            for (int i = 0; i < polygonCollider2D.pathCount; i++) {
+                Vector2 topLeftPoint = new (float.MaxValue, float.MinValue);
+                Vector2 bottomRightPoint = new (float.MinValue, float.MaxValue);
+                Vector2 [] polygonPoints = polygonCollider2D.GetPath (i);
+                // 选取最边界的情况, 使用矩形代替多边形
+                foreach(Vector2 point in polygonPoints) {
+                    if (point.x < topLeftPoint.x) topLeftPoint.x = point.x;
+                    if (point.y > topLeftPoint.y) topLeftPoint.y = point.y;
+                    if (point.x > bottomRightPoint.x) bottomRightPoint.x = point.x;
+                    if (point.y < bottomRightPoint.y) bottomRightPoint.y = point.y;
+                }
+                Vector2 topLeft = ToWorldPoint (polygonCollider2D, topLeftPoint);
+                Vector2 bottomRight = ToWorldPoint (polygonCollider2D, bottomRightPoint);
+                desc += $"{topLeft.x},{topLeft.y},{bottomRight.x},{bottomRight.y},";
+
+                DqnMod.instance.Log ($"{polygonCollider2D.name}");
+            }
+            return desc;
+        }
+
+        private Vector2 ToWorldPoint (Collider2D collider2D, Vector2 point)
+        {
+            Vector2 offsetPoint = point + collider2D.offset;
+            Vector2 transformPoint = collider2D.transform.TransformPoint (offsetPoint);
+            Vector2 worldPoint = Camera.main.WorldToScreenPoint (transformPoint);
+            worldPoint.y -= Screen.height;
+            return worldPoint;
         }
     }
 }

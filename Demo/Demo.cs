@@ -11,7 +11,7 @@ namespace Demo {
         // 使用单例, 方便其他位置调取
         public static DqnMod instance;
 
-        private const int _modVersion = 14;
+        private const int _modVersion = 17;
 
         public DqnMod ()
         {
