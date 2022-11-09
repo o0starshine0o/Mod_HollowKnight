@@ -7,18 +7,16 @@ using System.Reflection;
 using GlobalEnums;
 using Modding;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Demo {
     public class DqnMod : Mod {
-        // 与服务端约定的socket文件地址
-        public static readonly string SocketPath = Path.Combine (Path.GetTempPath (), "dqn.sock");
-
         // 使用单例, 方便其他位置调取
         public static DqnMod instance;
 
         public Socket socket;
 
-        private const int _modVersion = 19;
+        private const int _modVersion = 20;
 
         public DqnMod ()
         {
@@ -32,6 +30,8 @@ namespace Demo {
             Log ("Hello World");
 
             Socket ();
+
+            GUIController.Instance.Update ();
 
             ModHooks.SoulGainHook += SoulGainHook;
 
@@ -60,9 +60,8 @@ namespace Demo {
             socket = new Socket (AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             socket.Connect (ipEndPoint);
 
-            // 尝试发送一次坐标信息, 看看python那边能否接收到
-            byte [] bytes = System.Text.Encoding.Default.GetBytes ("387.0619,-857.4813,353.722,-942.9149,282.1341,-842.6593,386.3752,-943.0813,187.5991,-884.7138,308.6017,-900.3829,187.5991,-850.7072,308.6017,-866.3762,39.67054,-642.0569,263.5974,-942.0392,185.742,-614.3444,579.7271,-944.2349,");
-            socket.Send (bytes);
+
+            //socket.Send (System.Text.Encoding.Default.GetBytes ("Make AI Great Again too!"));
         }
 
         private int SoulGainHook (int soul)
@@ -104,6 +103,9 @@ namespace Demo {
             // GG_Workshop, 作坊
             // GG_Hornet_2， 大黄蜂
             Log ($"BeforeSceneLoadHook: {scene}");
+            //socket.Send (System.Text.Encoding.Default.GetBytes(scene));
+
+            socket.Send (System.Text.Encoding.Default.GetBytes ("Make AI Great Again too!"));
             return scene;
         }
 

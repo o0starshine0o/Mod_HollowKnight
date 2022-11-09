@@ -120,7 +120,7 @@ namespace Demo {
         private void AddHitBox (HitboxType hitboxType, Collider2D collider2D)
         {
             colliders[hitboxType].Add (collider2D);
-            DqnMod.instance.Log ($"TryAddHitboxes[{hitboxType}]: {collider2D}");
+            // DqnMod.instance.Log ($"TryAddHitboxes[{hitboxType}]: {collider2D}");
         }
 
         // 获取knight的坐标信息

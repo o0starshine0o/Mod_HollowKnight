@@ -1,6 +1,7 @@
 ﻿using System;
 using HutongGames.PlayMaker.Actions;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Demo {
     // 需要添加到引擎中去,才能达到每帧调用的目的
@@ -28,7 +29,9 @@ namespace Demo {
         {
             string knight = HitBox.Instance.GetKnightDesc ();
             string enemy = HitBox.Instance.GetEnemyDesc ();
-            DqnMod.instance.Log ($"{knight}|||||{enemy}");
+            // 每一帧都把当前的状态发送给python, 融合了reward和status
+            //DqnMod.instance.socket.Send (System.Text.Encoding.Default.GetBytes ($"{knight}{enemy}"));
+            //DqnMod.instance.Log ($"{knight}|||||{enemy}");
             //DqnMod.instance.Log ($"{enemy}");
         }
     }
