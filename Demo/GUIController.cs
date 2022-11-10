@@ -30,9 +30,8 @@ namespace Demo {
             string knight = HitBox.Instance.GetKnightDesc ();
             string enemy = HitBox.Instance.GetEnemyDesc ();
             // 每一帧都把当前的状态发送给python, 融合了reward和status
-            //DqnMod.instance.socket.Send (System.Text.Encoding.Default.GetBytes ($"{knight}{enemy}"));
-            //DqnMod.instance.Log ($"{knight}|||||{enemy}");
-            //DqnMod.instance.Log ($"{enemy}");
+            string result = $"{knight}{enemy}";
+            DqnMod.instance.socket.Send (System.Text.Encoding.Default.GetBytes (result));
         }
     }
 }

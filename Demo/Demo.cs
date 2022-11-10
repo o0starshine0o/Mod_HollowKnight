@@ -16,7 +16,7 @@ namespace Demo {
 
         public Socket socket;
 
-        private const int _modVersion = 20;
+        private const int _modVersion = 21;
 
         public DqnMod ()
         {
@@ -60,8 +60,8 @@ namespace Demo {
             socket = new Socket (AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             socket.Connect (ipEndPoint);
 
-
-            //socket.Send (System.Text.Encoding.Default.GetBytes ("Make AI Great Again too!"));
+            // 测试连接是否完成
+            socket.Send (System.Text.Encoding.Default.GetBytes ("Make AI Great Again too!"));
         }
 
         private int SoulGainHook (int soul)
@@ -103,9 +103,9 @@ namespace Demo {
             // GG_Workshop, 作坊
             // GG_Hornet_2， 大黄蜂
             Log ($"BeforeSceneLoadHook: {scene}");
-            //socket.Send (System.Text.Encoding.Default.GetBytes(scene));
 
-            socket.Send (System.Text.Encoding.Default.GetBytes ("Make AI Great Again too!"));
+            socket.Send (System.Text.Encoding.Default.GetBytes (scene));
+
             return scene;
         }
 
