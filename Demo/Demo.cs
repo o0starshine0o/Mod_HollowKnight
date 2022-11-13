@@ -14,9 +14,11 @@ namespace Demo {
         // 使用单例, 方便其他位置调取
         public static DqnMod instance;
 
-        public Socket socket;
+        private static byte [] _buffer = new byte [1024];
 
-        private const int _modVersion = 21;
+        private const int _modVersion = 23;
+
+        private Socket _socket;
 
         public DqnMod ()
         {
@@ -52,16 +54,22 @@ namespace Demo {
             ModHooks.DrawBlackBordersHook += DrawBlackBordersHook;
         }
 
+        public void Send (string message)
+        {
+            _socket.Send (System.Text.Encoding.Default.GetBytes (message));
+            _socket.Receive (_buffer);
+        }
+
         // 初始化socket, 方便其他模块直接向socket输出内容
         private void Socket ()
         {
             var ipEndPoint = new IPEndPoint (IPAddress.Parse ("127.0.0.1"), 9203);
 
-            socket = new Socket (AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            socket.Connect (ipEndPoint);
+            _socket = new Socket (AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            _socket.Connect (ipEndPoint);
 
             // 测试连接是否完成
-            socket.Send (System.Text.Encoding.Default.GetBytes ("Make AI Great Again too!"));
+            Send ("Make AI Great Again too!");
         }
 
         private int SoulGainHook (int soul)
@@ -104,7 +112,7 @@ namespace Demo {
             // GG_Hornet_2， 大黄蜂
             Log ($"BeforeSceneLoadHook: {scene}");
 
-            socket.Send (System.Text.Encoding.Default.GetBytes (scene));
+            Send (scene);
 
             return scene;
         }
