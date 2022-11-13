@@ -16,7 +16,7 @@ namespace Demo {
 
         private static byte [] _buffer = new byte [1024];
 
-        private const int _modVersion = 23;
+        private const int _modVersion = 25;
 
         private Socket _socket;
 
@@ -112,7 +112,8 @@ namespace Demo {
             // GG_Hornet_2， 大黄蜂
             Log ($"BeforeSceneLoadHook: {scene}");
 
-            Send (scene);
+            //Send (scene);
+            Message.Instance.scene = scene;
 
             return scene;
         }

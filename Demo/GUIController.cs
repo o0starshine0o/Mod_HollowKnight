@@ -1,5 +1,6 @@
 ﻿using System;
 using HutongGames.PlayMaker.Actions;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -31,8 +32,11 @@ namespace Demo {
             string enemy = HitBox.Instance.GetEnemyDesc ();
             // 每一帧都把当前的状态发送给python, 融合了reward和status
             //string result = $"{knight}{enemy}";
-            string result = $"{DateTime.Now}.{DateTime.Now.Millisecond.ToString ("000")}";
-            DqnMod.instance.Send (result);
+            //string result = $"{DateTime.Now}.{DateTime.Now.Millisecond.ToString ("000")}";
+            //DqnMod.instance.Send (result);
+
+            string jsonString = JsonConvert.SerializeObject (Message.Instance);
+            DqnMod.instance.Send (jsonString);
         }
     }
 }

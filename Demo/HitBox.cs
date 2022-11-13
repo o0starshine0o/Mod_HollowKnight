@@ -124,12 +124,41 @@ namespace Demo {
         }
 
         // 获取knight的坐标信息
+        public float [] GetKnightPoints ()
+        {
+            foreach (Collider2D collider2D in colliders [HitboxType.Knight]) {
+                switch (collider2D) {
+                case BoxCollider2D boxCollider2D:
+                    return GetPoints (boxCollider2D);
+                }
+            }
+            return null;
+        }
+
+        // 获取敌人的坐标信息
+        public List<float []> GetEnemyPoints ()
+        {
+            List<float []> points = new List<float []> ();
+            foreach (Collider2D collider2D in colliders [HitboxType.Enemy]) {
+                switch (collider2D) {
+                case BoxCollider2D boxCollider2D:
+                    points.Add (GetPoints (boxCollider2D));
+                    break;
+                case PolygonCollider2D polygonCollider2D:
+                    points.AddRange (GetPoints (polygonCollider2D));
+                    break;
+                }
+            }
+            return points;
+        }
+
+        // 获取knight的坐标信息
         public string GetKnightDesc ()
         {
             foreach (Collider2D collider2D in colliders [HitboxType.Knight]) {
                 switch (collider2D) {
                 case BoxCollider2D boxCollider2D:
-                    return GetPointDesc(boxCollider2D);
+                    return GetPointDesc (boxCollider2D);
                 }
             }
             return "";
@@ -153,6 +182,37 @@ namespace Demo {
             return desc;
         }
 
+        private float[] GetPoints(BoxCollider2D boxCollider2D)
+        {
+            Vector2 halfSize = boxCollider2D.size / 2f;
+            Vector2 topLeftPoint = new (-halfSize.x, halfSize.y);
+            Vector2 bottomRightPoint = new (halfSize.x, -halfSize.y);
+            Vector2 topLeft = ToWorldPoint (boxCollider2D, topLeftPoint);
+            Vector2 bottomRight = ToWorldPoint (boxCollider2D, bottomRightPoint);
+            return new float [4] {topLeft.x,topLeft.y,bottomRight.x, bottomRight.y};
+        }
+
+        private List<float []> GetPoints (PolygonCollider2D polygonCollider2D)
+        {
+            List<float []> points = new List<float[]>();
+            for (int i = 0; i < polygonCollider2D.pathCount; i++) {
+                Vector2 topLeftPoint = new (float.MaxValue, float.MinValue);
+                Vector2 bottomRightPoint = new (float.MinValue, float.MaxValue);
+                Vector2 [] polygonPoints = polygonCollider2D.GetPath (i);
+                // 选取最边界的情况, 使用矩形代替多边形
+                foreach (Vector2 point in polygonPoints) {
+                    if (point.x < topLeftPoint.x) topLeftPoint.x = point.x;
+                    if (point.y > topLeftPoint.y) topLeftPoint.y = point.y;
+                    if (point.x > bottomRightPoint.x) bottomRightPoint.x = point.x;
+                    if (point.y < bottomRightPoint.y) bottomRightPoint.y = point.y;
+                }
+                Vector2 topLeft = ToWorldPoint (polygonCollider2D, topLeftPoint);
+                Vector2 bottomRight = ToWorldPoint (polygonCollider2D, bottomRightPoint);
+                points.Add (new float [4] { topLeft.x, topLeft.y, bottomRight.x, bottomRight.y });
+            }
+            return points;
+        }
+
         private string GetPointDesc (BoxCollider2D boxCollider2D)
         {
             Vector2 halfSize = boxCollider2D.size / 2f;
@@ -161,7 +221,6 @@ namespace Demo {
             Vector2 topLeft = ToWorldPoint (boxCollider2D, topLeftPoint);
             Vector2 bottomRight = ToWorldPoint (boxCollider2D, bottomRightPoint);
             return $"{topLeft.x},{topLeft.y},{bottomRight.x},{bottomRight.y},";
-
         }
 
         private string GetPointDesc (PolygonCollider2D polygonCollider2D)
@@ -181,8 +240,6 @@ namespace Demo {
                 Vector2 topLeft = ToWorldPoint (polygonCollider2D, topLeftPoint);
                 Vector2 bottomRight = ToWorldPoint (polygonCollider2D, bottomRightPoint);
                 desc += $"{topLeft.x},{topLeft.y},{bottomRight.x},{bottomRight.y},";
-
-                DqnMod.instance.Log ($"{polygonCollider2D.name}");
             }
             return desc;
         }

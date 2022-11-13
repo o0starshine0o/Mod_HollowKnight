@@ -30,5 +30,8 @@
     <Reference Include="PlayMaker">
       <HintPath>bin\Debug\netstandard2.1\PlayMaker.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>bin\Debug\netstandard2.1\Newtonsoft.Json.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>
