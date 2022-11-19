@@ -73,8 +73,11 @@ namespace Demo {
 
         public void ClearHitBox ()
         {
-            foreach (HashSet<Collider2D> hashSet in colliders.Values) {
-                hashSet.Clear ();
+            foreach (HitboxType type in colliders.Keys) {
+                if (!HitboxType.Knight.Equals(type))
+                {
+                    colliders[type].Clear();
+                }
             }
             DqnMod.instance.Log ($"ClearHitBox");
         }

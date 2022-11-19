@@ -18,7 +18,7 @@ namespace Demo
 
         private static byte[] _buffer = new byte[1024];
 
-        private const int _modVersion = 26;
+        private const int _modVersion = 29;
 
         private Socket _socket;
 
@@ -34,8 +34,6 @@ namespace Demo
             Log("Hello World");
 
             Socket();
-
-            GUIController.Instance.Update();
 
             ModHooks.SoulGainHook += SoulGainHook;
 
@@ -117,6 +115,9 @@ namespace Demo
 
             //Send (scene);
             Message.Instance.scene = scene;
+
+            GUIController.Instance.Update();
+            HitBox.Instance.ClearHitBox();
 
             return scene;
         }
