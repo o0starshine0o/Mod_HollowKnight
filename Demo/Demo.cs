@@ -18,7 +18,7 @@ namespace Demo
 
         private static byte[] _buffer = new byte[1024];
 
-        private const int _modVersion = 29;
+        private const int _modVersion = 31;
 
         private Socket _socket;
 
@@ -113,11 +113,11 @@ namespace Demo
             // GG_Hornet_2， 大黄蜂
             Log($"BeforeSceneLoadHook: {scene}");
 
-            //Send (scene);
             Message.Instance.scene = scene;
 
             GUIController.Instance.Update();
             HitBox.Instance.ClearHitBox();
+            EnemyData.Instance.Clear();
 
             return scene;
         }
@@ -129,8 +129,11 @@ namespace Demo
             //Log($"CharmUpdateHook: {data}, {controller}");
         }
 
-        private void ColliderCreateHook(GameObject gameObject) =>
+        private void ColliderCreateHook(GameObject gameObject)
+        {
             HitBox.Instance.UpdateHitBox(gameObject);
+            EnemyData.Instance.Add(gameObject);
+        }
 
 
         private void DrawBlackBordersHook(List<GameObject> gameObjects)
