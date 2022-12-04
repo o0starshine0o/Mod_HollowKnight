@@ -29,37 +29,7 @@ namespace Demo
             }
         }
 
-        public float[] knight_points
-        {
-            get
-            {
-                return HitBox.Instance.GetKnightPoints();
-            }
-        }
-
-        public List<float[]> enemy_points
-        {
-            get
-            {
-                return HitBox.Instance.GetEnemyPoints();
-            }
-        }
-
-        public int hp
-        {
-            get
-            {
-                return PlayerData.instance.health;
-            }
-        }
-
-        public List<Enemy> enemies
-        {
-            get
-            {
-                return EnemyData.Instance.Update();
-            }
-        }
+        public Collider collider { get { return Collider.Instance; } }
     }
 }
 
