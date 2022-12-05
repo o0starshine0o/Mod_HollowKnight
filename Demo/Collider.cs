@@ -25,9 +25,12 @@ namespace Demo
         }
 
         // 以下内容每一帧更新都需要输出
-        public Knight knight { get; set; }
-        public List<Enemy> enemies { get; } = new List<Enemy>();
-        public List<Attack> attacks { get; } = new List<Attack>();
+        public Knight Knight { get; set; }
+        public List<Enemy> Enemies { get { return enemies.FindAll(enemy => enemy.isActive); } }
+        public List<Attack> Attacks { get { return attacks.FindAll(attack => attack.isActive); } }
+
+        private readonly List<Enemy> enemies = new List<Enemy>();
+        private readonly List<Attack> attacks = new List<Attack>();
 
         // 创建GameObject的hook
         public void ColliderCreateHook(GameObject gameObject)
@@ -65,18 +68,13 @@ namespace Demo
 
         private void TryAddKnight(GameObject gameObject, Collider2D collider2D)
         {
-            knight = new(gameObject, collider2D);
+            Knight = new(gameObject, collider2D);
 
             DqnMod.instance.Log("Add knight");
         }
 
         private void TryAddEnemy(GameObject gameObject, Collider2D collider2D)
         {
-            //if (enemies.Exists(enemy => enemy.gameObject == gameObject))
-            //{
-            //    return;
-            //}
-
             enemies.Add(new(gameObject, collider2D));
 
             DqnMod.instance.Log($"Add enemy: {gameObject.name} {collider2D.name}");

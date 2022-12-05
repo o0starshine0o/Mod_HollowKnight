@@ -16,9 +16,9 @@ namespace Demo
         // 使用单例, 方便其他位置调取
         public static DqnMod instance;
 
-        private static byte[] _buffer = new byte[1024];
+        private static byte[] _buffer = new byte[2048];
 
-        private const int _modVersion = 47;
+        private const int _modVersion = 52;
 
         private Socket _socket;
 
