@@ -31,9 +31,17 @@ namespace Demo
             }
         }
 
+        private long _frequency = 0;
+
         // 这个方法每帧都要调用,成本很高
         public void Update()
         {
+            // 增加一个频控, 避免过多的输出
+            _frequency += 1;
+            if (_frequency % 4 != 0)
+            {
+                return;
+            }
             string jsonString = JsonConvert.SerializeObject(Message.Instance);
             DqnMod.instance.Send(jsonString);
         }

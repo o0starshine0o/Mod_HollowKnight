@@ -75,6 +75,11 @@ namespace Demo
 
         private void TryAddEnemy(GameObject gameObject, Collider2D collider2D)
         {
+            if(gameObject == null || collider2D == null)
+            {
+                return;
+            }
+
             enemies.Add(new(gameObject, collider2D));
 
             DqnMod.instance.Log($"Add enemy: {gameObject.name} {collider2D.name}");
