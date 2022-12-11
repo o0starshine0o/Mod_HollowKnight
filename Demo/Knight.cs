@@ -30,6 +30,10 @@ namespace Demo
         public bool falling { get { return HeroController.instance.cState.falling; } }
         // 正在攻击
         public bool attacking { get { return HeroController.instance.cState.attacking; } }
+        // 是否接触到墙了
+        public bool touchingWall { get { return HeroController.instance.cState.touchingWall; } }
+        // 是否面朝右方
+        public bool facingRight { get { return HeroController.instance.cState.facingRight; } }
 
         // 能否冲刺
         public bool canCast { get { return HeroController.instance.CanCast(); } }
