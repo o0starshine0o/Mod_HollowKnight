@@ -18,7 +18,7 @@ namespace Demo
 
         private static byte[] _buffer = new byte[2048];
 
-        private const int _modVersion = 53;
+        private const int _modVersion = 55;
 
         private Socket _socket;
 

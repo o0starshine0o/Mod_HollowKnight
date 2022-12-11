@@ -51,7 +51,6 @@ namespace Demo
             Vector2 offsetPoint = point + collider2D.offset;
             Vector2 transformPoint = collider2D.transform.TransformPoint(offsetPoint);
             Vector2 worldPoint = Camera.main.WorldToScreenPoint(transformPoint);
-            //worldPoint.y = Screen.height - worldPoint.y;
             return new int[] { (int)Math.Round(worldPoint.x), (int)Math.Round(worldPoint.y) };
         }
     }
